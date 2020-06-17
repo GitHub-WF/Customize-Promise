@@ -10,13 +10,13 @@
 </body>
 <script src="./lib/promise.js"></script>
 <script>
-  const p = new Promise((resolve, reject) => {
+  // 测试Promise和链式调用
+  /* new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve('resolve') // value
       // reject('reject') // reason
     }, 1000)
-  })
-  p.then(
+  }).then(
     value => {
       console.log('onResolved(1)', value)
     },
@@ -26,25 +26,47 @@
   ).then(
     value => {
       console.log('onResolved(3)', value)
+      // throw 3
     },
     reason => {
       console.log('onRejected(4)', reason)
     }
+  ).catch(
+    reason => {
+      console.log('onRejected(5)', reason)
+      // return new Promise(() => {}) // 中断promise链
+    }
+  ).then(
+    value => {
+      console.log('onResolved(6)', value)
+    },
+    reason => {
+      console.log('onRejected(7)', reason)
+    }
+  ) */
+</script>
+<script>
+  // 测试promise.resolve和promise.reject
+  const p8 = Promise.resolve(8) // 传入普通值，返回成功promise
+  const p9 = Promise.resolve(Promise.resolve(9)) // 传入成功promise，返回成功promise
+  const p10 = Promise.resolve(Promise.reject(10)) // 传入失败promise，返回失败promise
+  const p11 = Promise.resolve(Promise.resolve(11).then(value => value)) // 传入promise.then( )，根据then( )返回的promise状态确定
+  p8.then(
+    value => console.log(value)
   )
-  // p.then(
-  //   value => {
-  //     console.log('onResolved(1)', value)
-  //   },
-  //   reason => {
-  //     console.log('onRejected(2)', reason)
-  //   }
-  // ).then(
-  //   value => {
-  //     console.log('onResolved(3)', value)
-  //   },
-  //   reason => {
-  //     console.log('onRejected(4)', reason)
-  //   }
-  // )
+  p9.then(
+    value => console.log(value)
+  )
+  p10.catch(
+    reason => console.log(reason)
+  )
+  p11.then(
+    value => console.log(value)
+  )
+  const p12 = Promise.reject(12) // 传入普通值，返回成功promise
+  p12.then(
+    value => console.log(value),
+    reason => console.log(reason)
+  )
 </script>
 </html>
