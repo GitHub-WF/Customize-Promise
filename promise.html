@@ -13,8 +13,8 @@
   // 测试Promise和链式调用
   /* new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve('resolve') // value
-      // reject('reject') // reason
+      // resolve('resolve') // value
+      reject('reject') // reason
     }, 1000)
   }).then(
     value => {
@@ -22,19 +22,20 @@
     },
     reason => {
       console.log('onRejected(2)', reason)
+      throw 1
     }
   ).then(
     value => {
       console.log('onResolved(3)', value)
-      // throw 3
     },
     reason => {
       console.log('onRejected(4)', reason)
+      throw 3
     }
   ).catch(
     reason => {
       console.log('onRejected(5)', reason)
-      // return new Promise(() => {}) // 中断promise链
+      return new Promise(() => {}) // 中断promise链
     }
   ).then(
     value => {
@@ -47,7 +48,7 @@
 </script>
 <script>
   // 测试promise.resolve和promise.reject
-  const p8 = Promise.resolve(8) // 传入普通值，返回成功promise
+  /* const p8 = Promise.resolve(8) // 传入普通值，返回成功promise
   const p9 = Promise.resolve(Promise.resolve(9)) // 传入成功promise，返回成功promise
   const p10 = Promise.resolve(Promise.reject(10)) // 传入失败promise，返回失败promise
   const p11 = Promise.resolve(Promise.resolve(11).then(value => value)) // 传入promise.then( )，根据then( )返回的promise状态确定
@@ -67,6 +68,29 @@
   p12.then(
     value => console.log(value),
     reason => console.log(reason)
+  ) */
+</script>
+<script>
+  /* const p1 = Promise.resolve(1)
+  const p2 = Promise.reject(2)
+  const p3 = Promise.resolve(3)
+
+  var pAll = Promise.all([p1, p2, p3])
+  pAll.then(
+    values => console.log(values),
+    reason => console.log(reason)
   )
+  var pRace = Promise.race([p1, p2, p3])
+  pRace.then(
+    value => console.log(value),
+    reason => console.log(reason)
+  ) */
+</script>
+<script>
+  // delayResolve和delayReject测试
+  const p6 = Promise.delayResolve(6, 2000);
+  const p7 = Promise.delayReject(7, 3000)
+  p6.then(value => console.log(value))
+  p7.catch(reason => console.log(reason))
 </script>
 </html>
